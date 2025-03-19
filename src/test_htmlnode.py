@@ -49,7 +49,7 @@ class TestTextNode(unittest.TestCase):
 		self.assertRaises(ValueError, parent_node.to_html)
 
 	def test_to_html_with_no_child(self):
-		parent_node = ParentNode("div", [])
+		parent_node = ParentNode("div", None)
 		self.assertRaises(ValueError, parent_node.to_html)
 
 	def test_to_html_with_children(self):
@@ -65,7 +65,6 @@ class TestTextNode(unittest.TestCase):
 			parent_node.to_html(),
 			"<div><span><b>grandchild</b></span></div>",
 		)
-
 
 if __name__ == '__main__':
 	unittest.main()
