@@ -25,7 +25,7 @@ def block_to_block_type(block):
 	if len(lines) > 1 and lines[0].startswith("```") and lines[-1].startswith("```"):  
 		return BlockType.CODE
 
-	if not False in map(lambda line: line.startswith("> "), lines):
+	if not False in map(lambda line: line.startswith(">"), lines):
 		return BlockType.QUOTE
 
 	if not False in map(lambda line: line.startswith("- "), lines):
@@ -81,7 +81,7 @@ def code_to_html_node(block):
 
 def quote_to_html_node(block):
 	lines = block.split("\n")
-	parsed = map(lambda line: line[2:].strip(), lines)
+	parsed = map(lambda line: line.strip(">").strip(), lines)
 	children = text_to_html_nodes(" ".join(parsed))
 	return ParentNode("blockquote", children)
 
