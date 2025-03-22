@@ -3,18 +3,18 @@ import os
 from pathlib import Path
 from markdown_blocks import markdown_to_html_node
 
-def generate_pages_recursively(content_path, template_path, dest_dir_path):
+def generate_pages_recursively(content_path, template_path, dest_dir_path, basepath): 
 	for file in os.listdir(content_path):
 		from_path = os.path.join(content_path, file)
 		dest_path = os.path.join(dest_dir_path, file)
 
 		if os.path.isfile(from_path):
 			dest_path = Path(dest_path).with_suffix(".html")
-			generate_page(from_path, template_path, dest_path)
+			generate_page(from_path, template_path, dest_path, basepath)
 		elif os.path.isdir(os.path.join(content_path, file)):
-			generate_pages_recursively(from_path, template_path, dest_path)
+			generate_pages_recursively(from_path, template_path, dest_path, basepath)
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, basepath):
 	print("Generating page from", from_path, "to", dest_path)
 
 	with open(from_path, "r") as file:
@@ -27,7 +27,10 @@ def generate_page(from_path, template_path, dest_path):
 	node = markdown_to_html_node(content)
 	html = node.to_html()
 
-	template = template.replace("{{ Title }}", title).replace("{{ Content }}", html)
+	template = template.replace("{{ Title }}", title)
+	template = template.replace("{{ Content }}", html)
+	template = template.replace('href="/', f'href=\"{basepath}')
+	template = template.replace('src="/', f'src=\"{basepath}')
 
 	dest_dir_path = os.path.dirname(dest_path)
 	if not os.path.exists(dest_dir_path):
