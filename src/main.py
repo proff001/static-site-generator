@@ -6,7 +6,7 @@ from copystatic import copy_files_recursively
 from gencontent import generate_pages_recursively
 
 dir_path_static = "./static"
-dir_path_public = "./public"
+dir_path_public = "./docs"
 dir_path_content = "./content"
 template_path = "./template.html"
 
@@ -18,11 +18,11 @@ def main():
 
 	print("Basepath:", basepath)
 
-	print("Deleting old public directory...")
+	print("Deleting old docs directory...")
 	if os.path.exists(dir_path_public):
 		shutil.rmtree(dir_path_public)
 
-	print("Copying static files to public directory...")
+	print("Copying static files to docs directory...")
 	copy_files_recursively(dir_path_static, dir_path_public)
 
 	print("Generating pages...")
